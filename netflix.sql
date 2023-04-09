@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-01-2023 a las 17:24:26
+-- Tiempo de generación: 09-04-2023 a las 23:57:07
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.10
 
@@ -38,6 +38,13 @@ CREATE TABLE `banca` (
   `status` enum('0','1') COLLATE utf8_spanish2_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+--
+-- Volcado de datos para la tabla `banca`
+--
+
+INSERT INTO `banca` (`idBank`, `dateBan`, `entBan`, `salBan`, `desBan`, `idBan`, `idMov`, `status`) VALUES
+(1234, '2022-08-18 20:02:00', 123, NULL, 'pago', 1, 1, '');
+
 -- --------------------------------------------------------
 
 --
@@ -47,21 +54,22 @@ CREATE TABLE `banca` (
 CREATE TABLE `banco` (
   `idBan` int(11) NOT NULL,
   `typBan` varchar(50) COLLATE utf8_spanish2_ci DEFAULT NULL,
-  `status` enum('0','1') COLLATE utf8_spanish2_ci DEFAULT NULL
+  `status` enum('0','1') COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `codigo` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `banco`
 --
 
-INSERT INTO `banco` (`idBan`, `typBan`, `status`) VALUES
-(1, 'Provincial', '0'),
-(2, 'Mercantil', '0'),
-(3, 'Banesco', '0'),
-(4, 'Venezuela', '0'),
-(5, 'Sofitasa', '0'),
-(6, 'Bicentenario', '0'),
-(7, 'Divisa', '0');
+INSERT INTO `banco` (`idBan`, `typBan`, `status`, `codigo`) VALUES
+(1, 'Provincial', '0', 108),
+(2, 'Mercantil', '0', 105),
+(3, 'Banesco', '0', 134),
+(4, 'Venezuela', '0', 102),
+(5, 'Sofitasa', '0', 137),
+(6, 'Bicentenario', '0', 175),
+(7, 'Divisa', '0', 0);
 
 -- --------------------------------------------------------
 
@@ -79,6 +87,14 @@ CREATE TABLE `cambio` (
   `idBan` int(11) DEFAULT NULL,
   `idDiv` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `cambio`
+--
+
+INSERT INTO `cambio` (`idCam`, `proCam`, `tazCam`, `monCam`, `dateCam`, `resCam`, `idBan`, `idDiv`) VALUES
+(1, 'ANGELLO', 0, 80, '2023-04-07 18:18:00', 80, 2, 4),
+(2, 'ANGELLO', 170, 80, '2023-04-07 18:18:00', 13600, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -118,6 +134,13 @@ CREATE TABLE `excel` (
   `status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+--
+-- Volcado de datos para la tabla `excel`
+--
+
+INSERT INTO `excel` (`idExc`, `fchExc`, `DesExc`, `idBan`, `refExc`, `entExc`, `salExc`, `status`) VALUES
+(1, '2023-04-08', '2/1/2023', 1, '', 0, 75001400000, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -126,12 +149,19 @@ CREATE TABLE `excel` (
 
 CREATE TABLE `gastoref` (
   `idGas` int(11) NOT NULL,
-  `gasCod` varchar(12) COLLATE utf8_spanish2_ci NOT NULL,
+  `descGas` text COLLATE utf8_spanish2_ci DEFAULT NULL,
   `dateGas` datetime DEFAULT NULL,
   `monGas` float DEFAULT NULL,
   `idBan` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `gastoref`
+--
+
+INSERT INTO `gastoref` (`idGas`, `descGas`, `dateGas`, `monGas`, `idBan`, `status`) VALUES
+(1, 'compra', '2022-08-29 19:14:00', -24, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -161,11 +191,25 @@ INSERT INTO `movimiento` (`idMov`, `typMov`) VALUES
 CREATE TABLE `referencia` (
   `idRef` int(11) NOT NULL,
   `refCod` varchar(12) COLLATE utf8_spanish2_ci NOT NULL,
+  `refCompuesto` int(10) NOT NULL,
   `dateRef` datetime DEFAULT NULL,
   `monRef` float DEFAULT NULL,
   `idBan` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `referencia`
+--
+
+INSERT INTO `referencia` (`idRef`, `refCod`, `refCompuesto`, `dateRef`, `monRef`, `idBan`, `status`) VALUES
+(1, '27507589', 0, '2023-04-07 19:24:00', 30, 1, 1),
+(2, '254634095', 0, '2023-04-08 16:33:00', 15.69, 3, 1),
+(3, '555555', 0, '2023-04-09 15:47:00', 2345, 2, 1),
+(4, '986', 986134, '2023-04-09 17:10:00', 5555, 3, 1),
+(5, '675', 675102, '2023-04-09 17:28:00', 7896, 4, 1),
+(6, '785', 785105, '2023-04-09 17:29:00', 7897, 2, 1),
+(7, '476', 476134, '2023-04-09 17:30:00', 7898, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -259,7 +303,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `banca`
 --
 ALTER TABLE `banca`
-  MODIFY `idBank` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idBank` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1235;
 
 --
 -- AUTO_INCREMENT de la tabla `banco`
@@ -271,7 +315,7 @@ ALTER TABLE `banco`
 -- AUTO_INCREMENT de la tabla `cambio`
 --
 ALTER TABLE `cambio`
-  MODIFY `idCam` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idCam` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `divisa`
@@ -283,13 +327,13 @@ ALTER TABLE `divisa`
 -- AUTO_INCREMENT de la tabla `excel`
 --
 ALTER TABLE `excel`
-  MODIFY `idExc` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idExc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `gastoref`
 --
 ALTER TABLE `gastoref`
-  MODIFY `idGas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idGas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `movimiento`
@@ -301,7 +345,7 @@ ALTER TABLE `movimiento`
 -- AUTO_INCREMENT de la tabla `referencia`
 --
 ALTER TABLE `referencia`
-  MODIFY `idRef` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idRef` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
